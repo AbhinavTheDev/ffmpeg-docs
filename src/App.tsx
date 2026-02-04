@@ -347,7 +347,7 @@ function App() {
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <a href="/" className="sidebar-brand">
+          <a href={import.meta.env.BASE_URL} className="sidebar-brand">
             <div className="sidebar-logo">
               <Film size={16} strokeWidth={2.5} />
             </div>
