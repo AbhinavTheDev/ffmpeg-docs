@@ -1,5 +1,5 @@
 
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { articles } from '../data/articles';
 import { info } from '../data/info';
 import { gettingStarted } from '../data/getting-started';
@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { X } from '@phosphor-icons/react';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -85,6 +86,20 @@ function SidebarContent({
 
 export function Sidebar({ isOpen, onClose, activeSlug, onArticleClick }: SidebarProps) {
     const topItems = useMemo(() => gettingStarted, []);
+    const defaultSlug = useMemo(() => gettingStarted[0]?.slug ?? "", []);
+
+    // Lock body scroll when sidebar is open on mobile
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
+
     const categories = useMemo(() => {
         const items = [
             {
@@ -106,18 +121,46 @@ export function Sidebar({ isOpen, onClose, activeSlug, onArticleClick }: Sidebar
         <>
             {/* Mobile Sheet */}
             <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-                <SheetContent side="left" className="w-full p-0 mt-16  bg-background">
-                    <ScrollArea className="h-full">
-                        <SidebarContent
-                            categories={categories}
-                            topItems={topItems}
-                            activeSlug={activeSlug}
-                            onArticleClick={(slug) => {
-                                onArticleClick(slug);
-                                onClose();
-                            }}
-                        />
-                    </ScrollArea>
+                <SheetContent
+                    side="left"
+                    className="w-full p-0 bg-background border-none h-screen"
+                    hideClose
+                >
+                    <div className="flex flex-col h-full">
+                        {/* Mobile Sidebar Header */}
+                        <div className="flex items-center h-16 px-4 border-b">
+                            <div 
+                                className="flex items-center space-x-2 cursor-pointer"
+                                onClick={() => {
+                                    onArticleClick(defaultSlug);
+                                    onClose();
+                                }}
+                            >
+                                <img src="./logo.svg" alt="FFmpeg Docs" className="h-7 w-7" />
+                                <span className="font-bold text-xl tracking-tight">FFmpeg Docs</span>
+                            </div>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="ml-auto h-9 w-9 px-0"
+                                onClick={onClose}
+                            >
+                                <X size={20} weight="bold" />
+                                <span className="sr-only">Close menu</span>
+                            </Button>
+                        </div>
+                        <ScrollArea className="flex-1">
+                            <SidebarContent
+                                categories={categories}
+                                topItems={topItems}
+                                activeSlug={activeSlug}
+                                onArticleClick={(slug) => {
+                                    onArticleClick(slug);
+                                    onClose();
+                                }}
+                            />
+                        </ScrollArea>
+                    </div>
                 </SheetContent>
             </Sheet>
 

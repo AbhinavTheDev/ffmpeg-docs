@@ -57,7 +57,8 @@ function App() {
       />
 
       <Header
-        onMenuClick={() => setSidebarOpen(true)}
+        isOpen={sidebarOpen}
+        onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         onSearchClick={() => setSpotlightOpen(true)}
       />
 
