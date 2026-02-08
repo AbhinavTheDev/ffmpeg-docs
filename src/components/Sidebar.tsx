@@ -37,11 +37,11 @@ function SidebarContent({
                                 <Button
                                     key={article.id}
                                     variant="ghost"
-                                    size="sm"
+                                    size="default"
                                     onClick={() => onArticleClick(article.slug)}
                                     className={cn(
-                                        "w-full justify-start font-normal h-auto py-2 px-3 text-left whitespace-normal text-sm",
-                                        activeSlug === article.slug && "bg-muted text-foreground font-medium"
+                                        "w-full justify-start text-lg md:text-sm h-auto py-2 px-3 text-left whitespace-normal",
+                                        activeSlug === article.slug && "bg-muted text-foreground"
                                     )}
                                 >
                                     {article.title}
@@ -52,7 +52,7 @@ function SidebarContent({
                     {categories.map((category) => (
                         <div key={category.id}>
                             <div className={cn("mb-2 font-semibold uppercase tracking-widest text-muted-foreground",
-                                category.id === "getting-started" ? "ml-2 text-lg" : 'text-xs',
+                                'text-sm',
                             )}>
                                 {category.title}
                             </div>
@@ -61,10 +61,10 @@ function SidebarContent({
                                     <Button
                                         key={article.id}
                                         variant="ghost"
-                                        size="sm"
+                                        size="default"
                                         onClick={() => onArticleClick(article.slug)}
                                         className={cn(
-                                            "w-full justify-start font-normal h-auto py-2 px-3 text-left whitespace-normal",
+                                            "w-full justify-start text-base md:text-xs font-normal h-auto py-2 px-3 text-left whitespace-normal",
                                             activeSlug === article.slug && "bg-muted text-foreground font-medium",
                                         )}
                                     >
@@ -129,7 +129,7 @@ export function Sidebar({ isOpen, onClose, activeSlug, onArticleClick }: Sidebar
                     <div className="flex flex-col h-full">
                         {/* Mobile Sidebar Header */}
                         <div className="flex items-center h-16 px-4 border-b">
-                            <div 
+                            <div
                                 className="flex items-center space-x-2 cursor-pointer"
                                 onClick={() => {
                                     onArticleClick(defaultSlug);
